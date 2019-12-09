@@ -21,21 +21,21 @@ semver=$(php -v | head -n 1 | cut -f 2 -d ' ' | cut -f 1 -d '-')
 step_log "Setup PHP and Composer"
 sudo mkdir -p /var/run
 sudo mkdir -p /run/php
-find /etc/apt/sources.list.d -type f -name 'ondrej-ubuntu-php*.list' -exec sudo DEBIAN_FRONTEND=noninteractive apt-fast update -o Dir::Etc::sourcelist="{}" ';' >/dev/null 2>&1
+find /etc/apt/sources.list.d -type f -name 'ondrej-ubuntu-php*.list' -exec sudo DEBIAN_FRONTEND=noninteractive apt-fast update -o Dir::Etc::sourcelist="{}" ';' 
 if [ "$existing_version" != "$1" ]; then
 	if [ ! -e "/usr/bin/php$1" ]; then
 		if [ "$1" = "7.4" ]; then
-		  sudo DEBIAN_FRONTEND=noninteractive apt-fast install -y php"$1" php"$1"-phpdbg php"$1"-xml curl php"$1"-curl >/dev/null 2>&1
+		  sudo DEBIAN_FRONTEND=noninteractive apt-fast install -y php"$1" php"$1"-phpdbg php"$1"-xml curl php"$1"-curl 
 		elif [ "$1" = "8.0" ]; then
       tar_file=php_"$1"%2Bubuntu"$(lsb_release -r -s)".tar.xz
       install_dir=~/php/"$1"
-      sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libicu-dev >/dev/null 2>&1
-      curl -o "$tar_file" -L https://bintray.com/shivammathur/php/download_file?file_path="$tar_file" >/dev/null 2>&1
+      sudo DEBIAN_FRONTEND=noninteractive apt-get -y install libicu-dev 
+      curl -o "$tar_file" -L https://bintray.com/shivammathur/php/download_file?file_path="$tar_file" 
       sudo mkdir -m 777 -p ~/php
-      sudo tar xf "$tar_file" -C ~/php  >/dev/null 2>&1 && rm -rf "$tar_file"
+      sudo tar xf "$tar_file" -C ~/php   && rm -rf "$tar_file"
       sudo ln -sf -S "$1" "$install_dir"/bin/* /usr/bin/ && sudo ln -sf "$install_dir"/etc/php.ini /etc/php.ini
 		else
-		  sudo DEBIAN_FRONTEND=noninteractive apt-fast install -y php"$1" curl php"$1"-curl >/dev/null 2>&1
+		  sudo DEBIAN_FRONTEND=noninteractive apt-fast install -y php"$1" curl php"$1"-curl 
 		fi
 		status="installed"
 	else
@@ -44,7 +44,7 @@ if [ "$existing_version" != "$1" ]; then
 
 	for tool in pear pecl php phar phar.phar php-cgi php-config phpize phpdbg; do
 		if [ -e "/usr/bin/$tool$1" ]; then
-			sudo update-alternatives --set $tool /usr/bin/"$tool$1" >/dev/null 2>&1
+			sudo update-alternatives --set $tool /usr/bin/"$tool$1" 
 		fi
 	done
 
@@ -67,12 +67,12 @@ ext_dir=$(php -i | grep "extension_dir => /usr" | sed -e "s|.*=> s*||")
 sudo chmod 777 "$ini_file"
 add_log "$tick" "PHP" "$status"
 if [ "$2" = "true" ]; then
-  sudo DEBIAN_FRONTEND=noninteractive apt-fast install -y php"$1"-dev php"$1"-xml >/dev/null 2>&1
-  sudo update-alternatives --set php-config /usr/bin/php-config"$1" >/dev/null 2>&1
-  sudo update-alternatives --set phpize /usr/bin/phpize"$1" >/dev/null 2>&1
-  wget https://github.com/pear/pearweb_phars/raw/master/install-pear-nozlib.phar >/dev/null 2>&1
-  sudo php install-pear-nozlib.phar >/dev/null 2>&1
-  sudo pear config-set php_ini "$ini_file" >/dev/null 2>&1
+  sudo DEBIAN_FRONTEND=noninteractive apt-fast install -y php"$1"-dev php"$1"-xml 
+  sudo update-alternatives --set php-config /usr/bin/php-config"$1" 
+  sudo update-alternatives --set phpize /usr/bin/phpize"$1" 
+  wget https://github.com/pear/pearweb_phars/raw/master/install-pear-nozlib.phar 
+  sudo php install-pear-nozlib.phar 
+  sudo pear config-set php_ini "$ini_file" 
   add_log "$tick" "PECL" "Installed"
 fi
 
@@ -86,7 +86,7 @@ if [ ! -e "/usr/bin/composer" ]; then
 	fi
 	rm composer-setup.php	
 fi
-composer global require hirak/prestissimo >/dev/null 2>&1
+composer global require hirak/prestissimo 
 add_log "$tick" "Composer" "Installed"
 
 add_extension()

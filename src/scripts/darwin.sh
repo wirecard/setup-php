@@ -20,15 +20,15 @@ add_log() {
 step_log "Setup PHP and Composer"
 version=$1
 export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
-brew tap shivammathur/homebrew-php >/dev/null 2>&1
-brew install shivammathur/php/php@"$1" composer >/dev/null 2>&1
-brew link --force --overwrite php@"$1" >/dev/null 2>&1
+brew tap shivammathur/homebrew-php 
+brew install shivammathur/php/php@"$1" composer 
+brew link --force --overwrite php@"$1" 
 ini_file=$(php -d "date.timezone=UTC" --ini | grep "Loaded Configuration" | sed -e "s|.*:s*||" | sed "s/ //g")
 echo "date.timezone=UTC" >> "$ini_file"
 ext_dir=$(php -i | grep "extension_dir => /usr" | sed -e "s|.*=> s*||")
 sudo chmod 777 "$ini_file"
 mkdir -p "$(pecl config-get ext_dir)"
-composer global require hirak/prestissimo >/dev/null 2>&1
+composer global require hirak/prestissimo 
 semver=$(php -v | head -n 1 | cut -f 2 -d ' ')
 add_log "$tick" "PHP" "Installed PHP $semver"
 add_log "$tick" "Composer" "Installed"

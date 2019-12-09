@@ -1,6 +1,6 @@
 ini_file=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:s*||" | sed "s/ //g")
 if [ ! "$(apt-cache search php"$2"-psr)" ]; then
-  sudo DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:ondrej/php -y >/dev/null 2>&1
+  sudo DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:ondrej/php -y 
 fi
 sudo DEBIAN_FRONTEND=noninteractive apt-fast install -y php"$2"-dev php"$2"-psr
 for tool in php-config phpize; do

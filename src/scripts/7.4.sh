@@ -20,10 +20,10 @@ version='7.4.0'
 step_log "Setup dependencies"
 for package in pkg-config autoconf bison re2c openssl@1.1 krb5 enchant libffi freetype intltool icu4c libiconv t1lib gd libzip gmp tidyp libxml2 libxslt postgresql curl;
 do
-  brew install "$package" >/dev/null 2>&1
+  brew install "$package" 
   add_log "$tick" "$package" "Installed"
 done
-brew link icu4c gettext --force >/dev/null 2>&1
+brew link icu4c gettext --force 
 
 for package in gettext gmp krb5 icu4c bison openssl@1.1 libxml2 libffi libxslt libiconv pkgconfig enchant krb5 readline libedit freetype;
 do
@@ -61,33 +61,33 @@ echo 'export EXTRA_LIBS="/usr/local/opt/readline/lib/libhistory.dylib
 config_file=$2/../src/configs/config.yaml
 
 step_log "Setup PHPBrew"
-curl -L -O https://github.com/phpbrew/phpbrew/raw/master/phpbrew >/dev/null 2>&1
+curl -L -O https://github.com/phpbrew/phpbrew/raw/master/phpbrew 
 chmod +x ./phpbrew
 sudo mv phpbrew /usr/local/bin/phpbrew
 sudo mkdir -p /opt/phpbrew
 sudo mkdir -p /usr/local/lib
 sudo mkdir -p /usr/local/bin
-sudo phpbrew init --root=/opt/phpbrew --config="$config_file" >/dev/null 2>&1
+sudo phpbrew init --root=/opt/phpbrew --config="$config_file" 
 sudo chmod -R 777 /opt/phpbrew
 export PHPBREW_ROOT=/opt/phpbrew
 export PHPBREW_HOME=/opt/phpbrew
 echo "[[ -e ~/.phpbrew/bashrc ]] && source ~/.phpbrew/bashrc" >> ~/.bashrc
 add_log "$tick" "PHPBrew" "Installed"
 
-source ~/.bash_profile >/dev/null 2>&1
-source ~/.bashrc >/dev/null 2>&1
+source ~/.bash_profile 
+source ~/.bashrc 
 
 step_log "Setup PHP and Composer"
-phpbrew install -j 6 github:php/php-src@PHP-$version as php-$version +dev >/dev/null 2>&1
+phpbrew install -j 6 github:php/php-src@PHP-$version as php-$version +dev 
 phpbrew switch $version
 sudo ln -sf /opt/phpbrew/php/php-$version/bin/* /usr/local/bin/
 sudo ln -sf /opt/phpbrew/php/php-$version/etc/php.ini /etc/php.ini
 ini_file=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:s*||" | sed "s/ //g")
 ext_dir=$(php -i | grep "extension_dir => /opt" | sed -e "s|.*=> s*||")
-pecl config-set php_ini "$ini_file" >/dev/null 2>&1
-pear config-set php_ini "$ini_file" >/dev/null 2>&1
+pecl config-set php_ini "$ini_file" 
+pear config-set php_ini "$ini_file" 
 sudo chmod 777 "$ini_file"
-brew install composer >/dev/null 2>&1
+brew install composer 
 
 add_log "$tick" "PHP" "Installed PHP$version"
 add_log "$tick" "Composer" "Installed"
